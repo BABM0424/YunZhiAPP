@@ -1,12 +1,15 @@
 package com.fengjinliu.myapplication777.Activity.View;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +18,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fengjinliu.myapplication777.Activity.View.School.SchoolHomepage;
 import com.fengjinliu.myapplication777.R;
 import com.fengjinliu.myapplication777.entity.*;
 
@@ -33,11 +37,39 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private
     ObjectMapper objectMapper=new ObjectMapper();
     //定义的两个textview来查看是否成功传入数据
-    private TextView textview;
-    private TextView textview2;
-    private Button button;
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    //选择到“主页”要使用的activity
+                    Intent intent = new Intent(MainActivity.this, SchoolHomepage.class);
+                    //startActivity(intent);
+                    return true;
+                case R.id.navigation_SchoolMain:
+                    //选择到“院校主页”要使用的activity
+
+                    return true;
+                case R.id.navigation_MyStudy:
+                    //选择到“我的学习”要使用的activity
+
+                    return true;
+                case R.id.navigation_Mine:
+                    //选择到“我”要使用的activity
+
+                    return true;
+
+            }
+            return false;
+        }
+    };
     //这里是你们用的school和course的变量
     List<School> schoollist=new ArrayList<School>();
     List<Course> courseList=new ArrayList<Course>();
@@ -54,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //好了现在获取到了courselist了。你们下面就可以给你们的空间填充你们想要的数据了
-                textview.setText(courseList.get(1).getTeaching_progress());
+                courseList.get(1).getTeaching_progress();
 
             }
         }
@@ -72,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //下一行同理
-                textview2.setText(schoollist.get(1).getName());
+               schoollist.get(1).getName();
             }
         }
     };
@@ -87,12 +119,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textview=(TextView)findViewById((R.id.textView));
-        textview2=(TextView)findViewById((R.id.textView2));
-        button=(Button)findViewById(R.id.button);
+        //textview=(TextView)findViewById((R.id.textView));
+        //textview2=(TextView)findViewById((R.id.textView2));
+       // button=(Button)findViewById(R.id.button);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.main_navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        myListener ml=new myListener();
-        button.setOnClickListener(ml);
+
+
         //调用参数。通过handler将参数获取后赋值给两个list
         GetAllCourse(originurl+getcourseurl);
         GetAllSchool(originurl+getschoolurl);
@@ -188,12 +222,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class myListener implements View.OnClickListener{
 
-        @Override
-        public void onClick(View v) {
-            textview2.setText(courseList.get(0).getTeaching_progress());
-        }
-    }
 
 }

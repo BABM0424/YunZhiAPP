@@ -11,6 +11,10 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".Activity.View.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".Activity.View.School.SchoolHomepage">
@@ -38,10 +42,7 @@
         </activity>
 
         <activity android:name=".Activity.View.Course.CourseDetail">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
     </application>
 

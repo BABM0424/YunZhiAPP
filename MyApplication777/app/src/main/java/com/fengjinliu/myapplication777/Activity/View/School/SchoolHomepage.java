@@ -5,10 +5,12 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fengjinliu.myapplication777.Activity.View.HomepageFragment;
 import com.fengjinliu.myapplication777.R;
 import com.fengjinliu.myapplication777.entity.*;
 
@@ -30,6 +32,8 @@ public class SchoolHomepage extends AppCompatActivity {
     //定义textview来查看是否成功传入数据
     private TextView textview3;
     private TextView textview4;
+    HomepageFragment homepageFragment;
+    ListView listView = (ListView)findViewById(R.id.list_view);
 
     static int school_id =1;
     //这里是你们用的teacher和course的变量
@@ -78,7 +82,7 @@ public class SchoolHomepage extends AppCompatActivity {
     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.school_homepage);
+
         textview3=(TextView)findViewById((R.id.textView3));
         textview4=(TextView)findViewById((R.id.textView4));
         getcoursebyschoolId(originurl+getcoursebyschool);
