@@ -33,23 +33,23 @@ import java.util.List;
 
 import com.fengjinliu.myapplication777.vo.*;//使用CourseAndTeacherVo来显示更多数据
 
-public class MyMessage extends AppCompatActivity {
+public class MyAbility extends AppCompatActivity {
 
     ObjectMapper objectMapper=new ObjectMapper();
     //定义的两个textview来查看是否成功传入数据
 
-    static BigInteger user_id= new BigInteger("2");
+    static BigInteger user_id= new BigInteger("3");
     //这里是你们用的Message的变量
-    List<Message> messageList=new ArrayList<Message>();
+    List<Ability_file> abilityList=new ArrayList<Ability_file>();
     //捕获course..vo Message的handler。
-    Handler messageHandler = new Handler(){
+    Handler abilityHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(msg.what==1){
                 String a=new String(msg.obj.toString());
                 try {
-                    messageList=objectMapper.readValue(a,new TypeReference<List<Message>>(){});
+                    abilityList=objectMapper.readValue(a,new TypeReference<List<Ability_file>>(){});
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -58,30 +58,30 @@ public class MyMessage extends AppCompatActivity {
             }
             else if(msg.what==2)
             {
-                AlertDialog.Builder builder=new AlertDialog.Builder(MyMessage.this);
-                builder.setMessage("暂无消息");
+                AlertDialog.Builder builder=new AlertDialog.Builder(MyAbility.this);
+                builder.setMessage("暂时没有完成相关能力评价。");
                 builder.show();
             }
         }
     };
     //定义所需url
     private String originurl="http://123.207.117.220:8080/";
-    private String getMyOwnMessageurl="me/message/";
+    private String getMyOwnabilityurl="ablility/";
     @Override
     /*
     OnClick在这里！！
     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_message);
+        setContentView(R.layout.my_ability);
 
         //调用参数。通过handler将参数获取后赋值给两个list
-        getMyOwnMessage(originurl+getMyOwnMessageurl+user_id);
+        getMyOwnAbility(originurl+getMyOwnabilityurl+user_id);
 
     }
 
     //获取所有课程的URL实现子线程。用courseHandler获取数据
-    public void getMyOwnMessage(final String s) {
+    public void getMyOwnAbility(final String s) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -107,13 +107,13 @@ public class MyMessage extends AppCompatActivity {
                         if(stringBuffer.toString().equals("[]")){
                             Message msg=Message.obtain();
                             msg.what=2;
-                            messageHandler.sendMessage(msg);
+                            abilityHandler.sendMessage(msg);
                         }
                         else{// Thread.sleep(10000);
                             Message msg = Message.obtain();
                             msg.what = 1;
                             msg.obj = stringBuffer;
-                            messageHandler.sendMessage(msg);
+                            abilityHandler.sendMessage(msg);
                         }
                     } else {
                         Log.d("TAG", "URLconnection error");
