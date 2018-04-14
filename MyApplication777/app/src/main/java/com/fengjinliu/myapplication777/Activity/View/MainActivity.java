@@ -1,6 +1,7 @@
 package com.fengjinliu.myapplication777.Activity.View;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -56,15 +57,26 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_SchoolMain:
                     //选择到“院校主页”要使用的activity
+                    Intent intent = new Intent(MainActivity.this,SchoolHomepage.class);
+                    startActivity(intent);
 
                     return true;
                 case R.id.navigation_MyStudy:
                     //选择到“我的学习”要使用的activity
-
+                    FragmentTransaction fragmentTransaction1 = getFragmentManager().beginTransaction();
+                    TextView textView =(TextView) findViewById(R.id.course_text1);
+                    textView.setText("    终于出来了");
+                    fragmentTransaction1.show(homepageFragment);
                     return true;
                 case R.id.navigation_Mine:
                     //选择到“我”要使用的activity
-
+                    homepageFragment = new HomepageFragment();
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.add(R.id.main_fragment,homepageFragment);
+                    fragmentTransaction.hide(homepageFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    fragmentTransaction.show(homepageFragment);
                     return true;
 
             }
@@ -99,12 +111,14 @@ public class MainActivity extends AppCompatActivity {
         GetAllCourse(originurl+getcourseurl);
         GetAllSchool(originurl+getschoolurl);
 
+
+        init();
         //textview2.setText("111111111");
     }
 
+    private void init(){
 
-
-
+    }
 
 
 
@@ -214,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int i=0;
                 for(Course course:courseList){
-                    main_homepage_data.put("course"+i,course);
+//                    main_homepage_data.put("course"+i,course);
                     i++;
                 }
             }
@@ -237,11 +251,10 @@ public class MainActivity extends AppCompatActivity {
 
                 int i=0;
                 for(School school:schoollist){
-                    main_homepage_data.put("school"+i,school);
+                 //   main_homepage_data.put("school"+i,school);
                     i++;
                 }
-                homepageFragment = new HomepageFragment();
-                // homepageFragment.getdata(main_homepage_data);
+
             }
         }
     };

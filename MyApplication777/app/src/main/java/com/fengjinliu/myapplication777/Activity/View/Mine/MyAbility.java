@@ -39,6 +39,8 @@ public class MyAbility extends AppCompatActivity {
     //定义的两个textview来查看是否成功传入数据
 
     static BigInteger user_id= new BigInteger("3");
+
+    /*
     //这里是你们用的Message的变量
     List<Ability_file> abilityList=new ArrayList<Ability_file>();
     //捕获course..vo Message的handler。
@@ -64,13 +66,12 @@ public class MyAbility extends AppCompatActivity {
             }
         }
     };
+
     //定义所需url
     private String originurl="http://123.207.117.220:8080/";
     private String getMyOwnabilityurl="ablility/";
     @Override
-    /*
-    OnClick在这里！！
-    */
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_ability);
@@ -130,5 +131,5 @@ public class MyAbility extends AppCompatActivity {
 
 
     }
-
+*/
 }

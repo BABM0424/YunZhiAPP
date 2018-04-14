@@ -1,5 +1,6 @@
 package com.fengjinliu.myapplication777.Activity.View.School;
 
+import android.app.FragmentTransaction;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +80,7 @@ public class SchoolHomepage extends AppCompatActivity {
     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         getcoursebyschoolId(originurl+getcoursebyschool);
         getteacherbyschoolId(originurl+getteacherbyschool);
