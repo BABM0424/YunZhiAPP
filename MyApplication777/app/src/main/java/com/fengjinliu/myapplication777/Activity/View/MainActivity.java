@@ -31,16 +31,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.zip.CheckedOutputStream;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private
     ObjectMapper objectMapper=new ObjectMapper();
-    //定义的两个textview来查看是否成功传入数据
-
+    private HomepageFragment homepageFragment;
+    private HashMap<String,Object> main_homepage_data;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //选择到“主页”要使用的activity
-                    Intent intent = new Intent(MainActivity.this, SchoolHomepage.class);
+                    //Intent intent = new Intent(MainActivity.this, SchoolHomepage.class);
                     //startActivity(intent);
                     return true;
                 case R.id.navigation_SchoolMain:
@@ -74,40 +75,7 @@ public class MainActivity extends AppCompatActivity {
     List<School> schoollist=new ArrayList<School>();
     List<Course> courseList=new ArrayList<Course>();
     //捕获course Message的handler。
-    Handler courseHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if(msg.what==1){
-                String a=new String(msg.obj.toString());
-                try {
-                    courseList=objectMapper.readValue(a,new TypeReference<List<Course>>(){});
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //好了现在获取到了courselist了。你们下面就可以给你们的空间填充你们想要的数据了
-                courseList.get(1).getTeaching_progress();
 
-            }
-        }
-    };
-    //捕获school的handler。
-    Handler schoolHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            super.handleMessage(msg);
-            if(msg.what==1){
-                String temp=new String (msg.obj.toString());
-                try{
-                    schoollist=objectMapper.readValue(temp,new TypeReference<List<School>>(){});
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-                //下一行同理
-               schoollist.get(1).getName();
-            }
-        }
-    };
     //定义所需url
     private String originurl="http://123.207.117.220:8080/";
     private String getschoolurl="login/school";
@@ -133,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
 
         //textview2.setText("111111111");
     }
+
+
+
+
+
+
+
+
+
 
 //获取所有课程的URL实现子线程。用courseHandler获取数据
     public void GetAllCourse(final String s){
@@ -221,6 +198,53 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
     }
+    Handler courseHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what==1){
+                String a=new String(msg.obj.toString());
+                try {
+                    courseList=objectMapper.readValue(a,new TypeReference<List<Course>>(){});
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //好了现在获取到了courselist了。你们下面就可以给你们的空间填充你们想要的数据了
+                courseList.get(1).getTeaching_progress();
+
+                int i=0;
+                for(Course course:courseList){
+                    main_homepage_data.put("course"+i,course);
+                    i++;
+                }
+            }
+        }
+    };
+    //捕获school的handler。
+    Handler schoolHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            if(msg.what==1){
+                String temp=new String (msg.obj.toString());
+                try{
+                    schoollist=objectMapper.readValue(temp,new TypeReference<List<School>>(){});
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                //下一行同理
+                schoollist.get(1).getName();
+
+                int i=0;
+                for(School school:schoollist){
+                    main_homepage_data.put("school"+i,school);
+                    i++;
+                }
+                homepageFragment = new HomepageFragment();
+                // homepageFragment.getdata(main_homepage_data);
+            }
+        }
+    };
 
 
 

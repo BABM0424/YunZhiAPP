@@ -29,11 +29,8 @@ import java.util.List;
 public class SchoolHomepage extends AppCompatActivity {
 
     ObjectMapper objectMapper=new ObjectMapper();
-    //定义textview来查看是否成功传入数据
-    private TextView textview3;
-    private TextView textview4;
+
     HomepageFragment homepageFragment;
-    ListView listView = (ListView)findViewById(R.id.list_view);
 
     static int school_id =1;
     //这里是你们用的teacher和course的变量
@@ -51,7 +48,7 @@ public class SchoolHomepage extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                textview3.setText(courseList.get(1).getTeaching_progress());
+               courseList.get(1).getTeaching_progress();
             }
         }
     };
@@ -68,7 +65,7 @@ public class SchoolHomepage extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //下一行同理
-                textview4.setText(teacherlist.get(1).getName());
+                teacherlist.get(1).getName();
             }
         }
     };
@@ -83,8 +80,6 @@ public class SchoolHomepage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        textview3=(TextView)findViewById((R.id.textView3));
-        textview4=(TextView)findViewById((R.id.textView4));
         getcoursebyschoolId(originurl+getcoursebyschool);
         getteacherbyschoolId(originurl+getteacherbyschool);
     }
