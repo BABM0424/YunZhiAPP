@@ -8,7 +8,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/rool_image"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="70dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,14 +41,14 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:text="更多"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintHorizontal_bias="0.939"
         app:layout_constraintStart_toEndOf="@+id/new_course"
-        app:layout_constraintTop_toTopOf="@id/rool_image"
-        app:layout_constraintVertical_bias="0.144" />
+        app:layout_constraintTop_toBottomOf="@+id/rool_image"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -66,8 +66,8 @@
         <ImageButton
             android:id="@+id/course_image1"
             android:src="@mipmap/ic_launcher"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             />
 
         <TextView
@@ -93,14 +93,16 @@
 
         <ImageButton
             android:id="@+id/course_image2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@mipmap/ic_launcher_round"
             />
 
         <TextView
             android:id="@+id/course_text2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:layout_weight="4" />
     </LinearLayout>
 
@@ -118,14 +120,16 @@
 
         <ImageButton
             android:id="@+id/course_image3"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@mipmap/ic_launcher_round"
              />
 
         <TextView
             android:id="@+id/course_text3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:layout_weight="4" />
     </LinearLayout>
 
@@ -179,19 +183,19 @@
         <ImageButton
             android:id="@+id/school_image_button2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/school_image_button3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/school_image_button4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -210,7 +214,7 @@
         <ImageButton
             android:id="@+id/school_image_button5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"/>
 
         <ImageButton
@@ -222,13 +226,13 @@
         <ImageButton
             android:id="@+id/school_image_button7"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"/>
 
         <ImageButton
             android:id="@+id/school_image_button8"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_weight="1"/>
     </LinearLayout>
 

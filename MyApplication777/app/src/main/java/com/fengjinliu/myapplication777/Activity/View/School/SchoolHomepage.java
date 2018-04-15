@@ -1,18 +1,14 @@
 package com.fengjinliu.myapplication777.Activity.View.School;
 
-import android.app.FragmentTransaction;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fengjinliu.myapplication777.Activity.View.HomepageFragment;
-import com.fengjinliu.myapplication777.R;
+import com.fengjinliu.myapplication777.Activity.View.Fragment.HomepageFragment;
 import com.fengjinliu.myapplication777.entity.*;
 
 

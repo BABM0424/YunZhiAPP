@@ -1,6 +1,6 @@
 package com.fengjinliu.myapplication777.Activity.View;
 
-import android.annotation.SuppressLint;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Handler;
@@ -11,14 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fengjinliu.myapplication777.Activity.View.Fragment.HomepageFragment;
+import com.fengjinliu.myapplication777.Activity.View.Fragment.MineFragment;
+import com.fengjinliu.myapplication777.Activity.View.Fragment.MyStudyFragment;
+import com.fengjinliu.myapplication777.Activity.View.Fragment.SchoolHomepageFragment;
 import com.fengjinliu.myapplication777.Activity.View.School.SchoolHomepage;
 import com.fengjinliu.myapplication777.R;
 import com.fengjinliu.myapplication777.entity.*;
@@ -34,7 +35,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.zip.CheckedOutputStream;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private
     ObjectMapper objectMapper=new ObjectMapper();
     private HomepageFragment homepageFragment;
+    private SchoolHomepageFragment schoolHomepageFragment;
+    private MyStudyFragment myStudyFragment;
+    private MineFragment mineFragment;
     private HashMap<String,Object> main_homepage_data;
+    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+    FragmentManager fragmentManager = getFragmentManager();
+
+    private TextView course_introduction1,course_introduction2,course_introduction3 ;
+    private ImageButton course_img1,course_img2,course_img3;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,32 +59,21 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //选择到“主页”要使用的activity
-                    //Intent intent = new Intent(MainActivity.this, SchoolHomepage.class);
-                    //startActivity(intent);
+                    //选择到“主页”
+                   showmainhomepage();
                     return true;
                 case R.id.navigation_SchoolMain:
-                    //选择到“院校主页”要使用的activity
-                    Intent intent = new Intent(MainActivity.this,SchoolHomepage.class);
-                    startActivity(intent);
-
+                    //选择到“院校主页”
+                    showschoolhomepage();
                     return true;
                 case R.id.navigation_MyStudy:
-                    //选择到“我的学习”要使用的activity
-                    FragmentTransaction fragmentTransaction1 = getFragmentManager().beginTransaction();
-                    TextView textView =(TextView) findViewById(R.id.course_text1);
-                    textView.setText("    终于出来了");
-                    fragmentTransaction1.show(homepageFragment);
+                    //选择到“我的学习”
+                    showMyStudy();
                     return true;
                 case R.id.navigation_Mine:
-                    //选择到“我”要使用的activity
-                    homepageFragment = new HomepageFragment();
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.add(R.id.main_fragment,homepageFragment);
-                    fragmentTransaction.hide(homepageFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    fragmentTransaction.show(homepageFragment);
+                    //选择到“我”
+                    showMine();
+
                     return true;
 
             }
@@ -112,11 +109,60 @@ public class MainActivity extends AppCompatActivity {
         GetAllSchool(originurl+getschoolurl);
 
 
+
         init();
         //textview2.setText("111111111");
     }
 
     private void init(){
+
+        homepageFragment = new HomepageFragment();
+        schoolHomepageFragment = new SchoolHomepageFragment();
+        myStudyFragment = new MyStudyFragment();
+        mineFragment = new MineFragment();
+
+
+
+        fragmentTransaction.add(R.id.main_fragment,homepageFragment)
+                .add(R.id.main_fragment,schoolHomepageFragment)
+                .add(R.id.main_fragment,myStudyFragment)
+                .add(R.id.main_fragment,mineFragment);
+        fragmentTransaction.hide(homepageFragment).hide(schoolHomepageFragment).hide(myStudyFragment).hide(mineFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        fragmentTransaction.show(homepageFragment);
+
+    }
+
+
+    private void showmainhomepage(){
+
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.hide(myStudyFragment).hide(schoolHomepageFragment).hide(mineFragment);
+        fragmentTransaction.show(homepageFragment);
+        fragmentTransaction.commit();
+        get_main_homepage_course();
+    }
+    private void showschoolhomepage(){
+        get_school_homepage_course();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.hide(myStudyFragment).hide(homepageFragment).hide(mineFragment);
+        fragmentTransaction.show(schoolHomepageFragment);
+        fragmentTransaction.commit();
+
+    }
+    private void showMyStudy(){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.hide(schoolHomepageFragment).hide(homepageFragment).hide(mineFragment);
+        fragmentTransaction.show(myStudyFragment);
+        fragmentTransaction.commit();
+
+    }
+    private void showMine(){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.hide(myStudyFragment).hide(homepageFragment).hide(schoolHomepageFragment);
+        fragmentTransaction.show(mineFragment);
+        fragmentTransaction.commit();
 
     }
 
@@ -225,12 +271,27 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //好了现在获取到了courselist了。你们下面就可以给你们的空间填充你们想要的数据了
                 courseList.get(1).getTeaching_progress();
-
-                int i=0;
-                for(Course course:courseList){
-//                    main_homepage_data.put("course"+i,course);
-                    i++;
+                course_img1 = (ImageButton)findViewById(R.id.course_image1);
+                course_img2 = (ImageButton)findViewById(R.id.course_image2);
+                course_img3 = (ImageButton)findViewById(R.id.course_image3);
+                course_introduction1 = (TextView)findViewById(R.id.course_text1);
+                course_introduction2  = (TextView)findViewById(R.id.course_text2);
+                course_introduction3 = (TextView)findViewById(R.id.course_text3);
+                if(courseList.isEmpty()==true) {
+                    course_introduction1.setText("java从入门到入土");
+                    course_introduction2.setText("Android从初学到放弃");
+                    course_introduction3.setText("看到我头上的佛光了吗");
                 }
+                else {
+                    course_introduction1.setText(courseList.get(0).getIntroduction()+"\n\n"+courseList.get(0).getName());
+                    course_introduction2.setText(courseList.get(1).getIntroduction()+"\n\n"+courseList.get(1).getName());
+                    course_introduction3.setText(courseList.get(2).getIntroduction()+"\n\n"+courseList.get(2).getName());
+                }
+                course_img1.setImageResource(R.mipmap.ic_launcher);
+                course_img2.setImageResource(R.mipmap.ic_launcher);
+                course_img3.setImageResource(R.mipmap.ic_launcher);
+
+
             }
         }
     };
@@ -249,16 +310,56 @@ public class MainActivity extends AppCompatActivity {
                 //下一行同理
                 schoollist.get(1).getName();
 
-                int i=0;
-                for(School school:schoollist){
-                 //   main_homepage_data.put("school"+i,school);
-                    i++;
-                }
-
             }
         }
     };
 
+    private  void get_main_homepage_course()
+    {
+        course_img1 = (ImageButton)findViewById(R.id.course_image1);
+        course_img2 = (ImageButton)findViewById(R.id.course_image2);
+        course_img3 = (ImageButton)findViewById(R.id.course_image3);
+        course_introduction1 = (TextView)findViewById(R.id.course_text1);
+        course_introduction2  = (TextView)findViewById(R.id.course_text2);
+        course_introduction3 = (TextView)findViewById(R.id.course_text3);
+        if(courseList.isEmpty()==true) {
+            course_introduction1.setText("java从入门到入土");
+            course_introduction2.setText("Android从初学到放弃");
+            course_introduction3.setText("看到我头上的佛光了吗");
+        }
+        else {
+            course_introduction1.setText(courseList.get(0).getIntroduction()+"\n\n"+courseList.get(0).getName());
+            course_introduction2.setText(courseList.get(1).getIntroduction()+"\n\n"+courseList.get(1).getName());
+            course_introduction3.setText(courseList.get(2).getIntroduction()+"\n\n"+courseList.get(2).getName());
+        }
+        course_img1.setImageResource(R.mipmap.ic_launcher);
+        course_img2.setImageResource(R.mipmap.ic_launcher);
+        course_img3.setImageResource(R.mipmap.ic_launcher);
+    }
 
+    private  void get_school_homepage_course()
+    {
+        ImageButton school_course_imag1,school_course_imag2,school_course_imag3;
+        TextView school_course_introduction1,school_course_introduction2,school_course_introduction3;
+        school_course_imag1 = (ImageButton)findViewById(R.id.school_course_image1);
+        school_course_imag2 = (ImageButton)findViewById(R.id.school_course_image2);
+        school_course_imag3 = (ImageButton)findViewById(R.id.school_course_image3);
+        school_course_introduction1 = (TextView)findViewById(R.id.school_course_text1);
+        school_course_introduction2  = (TextView)findViewById(R.id.school_course_text2);
+        school_course_introduction3 = (TextView)findViewById(R.id.school_course_text3);
+        if(courseList.isEmpty()==true) {
+            school_course_introduction1.setText("java从入门到入土");
+            school_course_introduction2.setText("Android从初学到放弃");
+            school_course_introduction3.setText("看到我头上的佛光了吗");
+        }
+        else {
+            school_course_introduction1.setText(courseList.get(0).getIntroduction()+"\n\n"+courseList.get(0).getName());
+            school_course_introduction2.setText(courseList.get(1).getIntroduction()+"\n\n"+courseList.get(1).getName());
+            school_course_introduction3.setText(courseList.get(2).getIntroduction()+"\n\n"+courseList.get(2).getName());
+        }
+        school_course_imag1.setImageResource(R.mipmap.ic_launcher);
+        school_course_imag2.setImageResource(R.mipmap.ic_launcher);
+        school_course_imag3.setImageResource(R.mipmap.ic_launcher);
+    }
 
 }
